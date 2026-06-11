@@ -11,19 +11,36 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: #111;
       font-family: "Malgun Gothic", sans-serif;
+      overflow: hidden;
     }
     .text {
-      color: #fff;
       font-size: 12vw;
       font-weight: 900;
-      text-shadow: 4px 4px 12px rgba(0,0,0,0.3);
-      animation: pop 1.2s ease infinite alternate;
+      background: linear-gradient(90deg,
+        #ff0000, #ff8000, #ffff00, #00ff00,
+        #00ffff, #0080ff, #8000ff, #ff0080, #ff0000);
+      background-size: 400% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: rainbow 3s linear infinite, sparkle 0.8s ease-in-out infinite alternate;
     }
-    @keyframes pop {
-      from { transform: scale(1) rotate(-2deg); }
-      to   { transform: scale(1.08) rotate(2deg); }
+    @keyframes rainbow {
+      from { background-position: 0% 50%; }
+      to   { background-position: 400% 50%; }
+    }
+    @keyframes sparkle {
+      from {
+        transform: scale(1) rotate(-2deg);
+        filter: drop-shadow(0 0 6px rgba(255,255,255,0.4)) brightness(1);
+      }
+      to {
+        transform: scale(1.08) rotate(2deg);
+        filter: drop-shadow(0 0 24px rgba(255,255,255,0.95)) brightness(1.4);
+      }
     }
   </style>
 </head>
