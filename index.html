@@ -3,74 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>박용준 살좀 쪄라</title>
+  <title>우리 시누 사랑해용 ❤️</title>
   <style>
     html, body {
       margin: 0;
       height: 100%;
+      overflow: hidden;
+      font-family: "Malgun Gothic", sans-serif;
+      /* 러블리 파스텔 핑크 배경 */
+      background: linear-gradient(135deg, #ffe0ec 0%, #ffd1e3 40%, #ffc8dd 70%, #fbb1d3 100%);
+    }
+    .stage {
+      position: relative;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      /* 내가 좋아하는 딥네이비 + 은은한 오로라 배경 */
-      background:
-        radial-gradient(circle at 30% 20%, rgba(45,212,191,0.18), transparent 45%),
-        radial-gradient(circle at 75% 80%, rgba(139,92,246,0.20), transparent 45%),
-        #0b1020;
-      font-family: "Malgun Gothic", sans-serif;
-      overflow: hidden;
     }
     .text {
-      font-size: 11vw;
+      font-size: 10vw;
       font-weight: 900;
       white-space: nowrap;
       display: flex;
+      align-items: center;
+      z-index: 2;
     }
-    .text .space { width: 0.4em; }
+    .text .space { width: 0.35em; }
 
     .text .ch {
       display: inline-block;
-      /* 민트 → 시안 → 바이올렛 그라데이션 */
-      background: linear-gradient(120deg, #5eead4, #38bdf8, #818cf8, #c084fc, #5eead4);
+      /* 로즈 → 핑크 → 코랄 그라데이션 */
+      background: linear-gradient(120deg, #ff7eb3, #ff5ea8, #ff9aa2, #ffb7c5, #ff7eb3);
       background-size: 300% 100%;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       -webkit-text-fill-color: transparent;
-      transform: translateY(40px) scale(0.6);
+      transform: translateY(30px) scale(0.4);
       opacity: 0;
       animation:
-        rise 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.2) var(--d) forwards,
-        flow 6s ease-in-out infinite,
-        glow 2.4s ease-in-out calc(var(--d) + 0.8s) infinite;
+        pop 0.7s cubic-bezier(0.2, 1.6, 0.4, 1) var(--d) forwards,
+        flow 5s ease-in-out infinite,
+        bob 2.6s ease-in-out calc(var(--d) + 0.7s) infinite;
     }
-    /* 아래에서 부드럽게 떠오르며 등장 */
-    @keyframes rise {
-      0%   { transform: translateY(40px) scale(0.6); opacity: 0; }
-      60%  { transform: translateY(-8px) scale(1.08); opacity: 1; }
+    /* 하트 이모지: 통통 뛰는 심장박동 */
+    .text .heart {
+      display: inline-block;
+      margin-left: 0.1em;
+      -webkit-text-fill-color: initial;
+      transform: scale(0);
+      opacity: 0;
+      animation:
+        pop 0.6s cubic-bezier(0.2, 1.8, 0.4, 1) var(--d) forwards,
+        beat 1s ease-in-out calc(var(--d) + 0.6s) infinite;
+    }
+    @keyframes pop {
+      0%   { transform: translateY(30px) scale(0.4); opacity: 0; }
+      60%  { transform: translateY(-6px) scale(1.2); opacity: 1; }
       100% { transform: translateY(0) scale(1); opacity: 1; }
     }
-    /* 색이 천천히 흐름 */
     @keyframes flow {
       0%, 100% { background-position: 0% 50%; }
       50%      { background-position: 100% 50%; }
     }
-    /* 은은하게 맥동하는 글로우 + 살짝 둥실 */
-    @keyframes glow {
-      0%, 100% {
-        filter: drop-shadow(0 0 6px rgba(94,234,212,0.5)) brightness(1);
-        transform: translateY(0);
-      }
-      50% {
-        filter: drop-shadow(0 0 22px rgba(129,140,248,0.9)) brightness(1.25);
-        transform: translateY(-7px);
-      }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); filter: drop-shadow(0 3px 6px rgba(255,105,180,0.35)); }
+      50%      { transform: translateY(-8px); filter: drop-shadow(0 10px 14px rgba(255,105,180,0.5)); }
+    }
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      25%      { transform: scale(1.25); }
+      40%      { transform: scale(1); }
+      55%      { transform: scale(1.18); }
+    }
+
+    /* 배경에 둥실 떠오르는 하트들 */
+    .floaties { position: absolute; inset: 0; overflow: hidden; z-index: 1; }
+    .floaties span {
+      position: absolute;
+      bottom: -10%;
+      font-size: var(--s);
+      left: var(--x);
+      opacity: 0;
+      animation: floatUp var(--t) linear var(--delay) infinite;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(0deg) scale(0.6); opacity: 0; }
+      10%  { opacity: 0.9; }
+      90%  { opacity: 0.9; }
+      100% { transform: translateY(-115vh) rotate(40deg) scale(1); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <div class="text" id="text"></div>
+  <div class="stage">
+    <div class="floaties" id="floaties"></div>
+    <div class="text" id="text"></div>
+  </div>
   <script>
-    const str = "박용준 살좀 쪄라";
+    // 메인 문구 (마지막 하트는 이모티콘으로)
+    const str = "우리 시누 사랑해용ㅎ";
     const box = document.getElementById("text");
     let i = 0;
     for (const c of str) {
@@ -83,9 +115,28 @@
       const span = document.createElement("span");
       span.className = "ch";
       span.textContent = c;
-      span.style.setProperty("--d", (i * 0.12) + "s");
+      span.style.setProperty("--d", (i * 0.1) + "s");
       box.appendChild(span);
       i++;
+    }
+    // 하트 이모지
+    const heart = document.createElement("span");
+    heart.className = "heart";
+    heart.textContent = "❤️";
+    heart.style.setProperty("--d", (i * 0.1) + "s");
+    box.appendChild(heart);
+
+    // 배경 둥실 하트 생성
+    const f = document.getElementById("floaties");
+    const emojis = ["❤️","💕","💖","🩷","💗"];
+    for (let k = 0; k < 18; k++) {
+      const s = document.createElement("span");
+      s.textContent = emojis[k % emojis.length];
+      s.style.setProperty("--x", Math.random() * 100 + "%");
+      s.style.setProperty("--s", (1.5 + Math.random() * 2.5) + "rem");
+      s.style.setProperty("--t", (6 + Math.random() * 6) + "s");
+      s.style.setProperty("--delay", (Math.random() * 6) + "s");
+      f.appendChild(s);
     }
   </script>
 </body>
