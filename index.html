@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>메인페이지</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      font-family: "Malgun Gothic", sans-serif;
+    }
+    .text {
+      color: #fff;
+      font-size: 12vw;
+      font-weight: 900;
+      text-shadow: 4px 4px 12px rgba(0,0,0,0.3);
+      animation: pop 1.2s ease infinite alternate;
+    }
+    @keyframes pop {
+      from { transform: scale(1) rotate(-2deg); }
+      to   { transform: scale(1.08) rotate(2deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="text">이경훈바보</div>
+</body>
+</html>
