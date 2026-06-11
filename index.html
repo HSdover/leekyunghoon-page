@@ -16,9 +16,16 @@
       overflow: hidden;
     }
     .text {
-      font-size: 12vw;
+      font-size: 11vw;
       font-weight: 900;
       white-space: nowrap;
+      display: flex;
+    }
+    /* 공백도 자리를 차지하도록 */
+    .text .space { width: 0.4em; }
+
+    .text .ch {
+      display: inline-block;
       background: linear-gradient(90deg,
         #ff0000, #ff8000, #ffff00, #00ff00,
         #00ffff, #0080ff, #8000ff, #ff0080, #ff0000);
@@ -27,31 +34,50 @@
       background-clip: text;
       color: transparent;
       -webkit-text-fill-color: transparent;
-      /* drop = 위에서 떨어지며 통통 튀는 효과 (3초마다 반복) */
+      transform: translateY(-120vh) rotate(-40deg);
+      opacity: 0;
+      /* flyIn: 한 글자씩 위에서 날아옴(var(--d) 만큼 시차) / rainbow: 무지개 흐름 / flash: 번쩍번쩍 */
       animation:
+        flyIn 0.7s cubic-bezier(0.25, 1.4, 0.5, 1) var(--d) forwards,
         rainbow 3s linear infinite,
-        sparkle 0.8s ease-in-out infinite alternate,
-        drop 3s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        flash 0.28s steps(1, end) calc(var(--d) + 0.7s) infinite;
+    }
+    @keyframes flyIn {
+      0%   { transform: translateY(-120vh) rotate(-40deg) scale(0.3); opacity: 0; }
+      70%  { transform: translateY(12px) rotate(8deg) scale(1.15); opacity: 1; }
+      100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
     }
     @keyframes rainbow {
       from { background-position: 0% 50%; }
       to   { background-position: 400% 50%; }
     }
-    @keyframes sparkle {
-      from { filter: drop-shadow(0 0 6px rgba(255,255,255,0.4)) brightness(1); }
-      to   { filter: drop-shadow(0 0 24px rgba(255,255,255,0.95)) brightness(1.4); }
-    }
-    @keyframes drop {
-      0%   { transform: translateY(-120vh) scale(1) rotate(-6deg); }
-      55%  { transform: translateY(0) scale(1) rotate(0deg); }
-      67%  { transform: translateY(0) scaleY(0.78) scaleX(1.12); }   /* 바닥에 닿아 찌그러짐 */
-      78%  { transform: translateY(-18vh) scaleY(1.05) scaleX(0.97); } /* 살짝 튀어오름 */
-      88%  { transform: translateY(0) scaleY(0.92) scaleX(1.05); }
-      100% { transform: translateY(0) scale(1) rotate(2deg); }
+    @keyframes flash {
+      0%   { filter: drop-shadow(0 0 4px #fff) brightness(1); }
+      50%  { filter: drop-shadow(0 0 28px #fff) drop-shadow(0 0 40px #ff0) brightness(2.2); }
+      100% { filter: drop-shadow(0 0 4px #fff) brightness(1); }
     }
   </style>
 </head>
 <body>
-  <div class="text">이태원 폭주남 김동철</div>
+  <div class="text" id="text"></div>
+  <script>
+    const str = "이태원 폭주남 김동철";
+    const box = document.getElementById("text");
+    let i = 0;
+    for (const c of str) {
+      if (c === " ") {
+        const sp = document.createElement("span");
+        sp.className = "space";
+        box.appendChild(sp);
+        continue;
+      }
+      const span = document.createElement("span");
+      span.className = "ch";
+      span.textContent = c;
+      span.style.setProperty("--d", (i * 0.18) + "s"); // 한 글자씩 시차
+      box.appendChild(span);
+      i++;
+    }
+  </script>
 </body>
 </html>
