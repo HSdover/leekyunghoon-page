@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>이태원 폭주남 김동철</title>
+  <title>박용준 살좀 쪄라</title>
   <style>
     html, body {
       margin: 0;
@@ -11,7 +11,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #111;
+      /* 내가 좋아하는 딥네이비 + 은은한 오로라 배경 */
+      background:
+        radial-gradient(circle at 30% 20%, rgba(45,212,191,0.18), transparent 45%),
+        radial-gradient(circle at 75% 80%, rgba(139,92,246,0.20), transparent 45%),
+        #0b1020;
       font-family: "Malgun Gothic", sans-serif;
       overflow: hidden;
     }
@@ -21,47 +25,52 @@
       white-space: nowrap;
       display: flex;
     }
-    /* 공백도 자리를 차지하도록 */
     .text .space { width: 0.4em; }
 
     .text .ch {
       display: inline-block;
-      background: linear-gradient(90deg,
-        #ff0000, #ff8000, #ffff00, #00ff00,
-        #00ffff, #0080ff, #8000ff, #ff0080, #ff0000);
-      background-size: 400% 100%;
+      /* 민트 → 시안 → 바이올렛 그라데이션 */
+      background: linear-gradient(120deg, #5eead4, #38bdf8, #818cf8, #c084fc, #5eead4);
+      background-size: 300% 100%;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       -webkit-text-fill-color: transparent;
-      transform: translateY(-120vh) rotate(-40deg);
+      transform: translateY(40px) scale(0.6);
       opacity: 0;
-      /* flyIn: 한 글자씩 위에서 날아옴(var(--d) 만큼 시차) / rainbow: 무지개 흐름 / flash: 번쩍번쩍 */
       animation:
-        flyIn 0.7s cubic-bezier(0.25, 1.4, 0.5, 1) var(--d) forwards,
-        rainbow 3s linear infinite,
-        flash 0.28s steps(1, end) calc(var(--d) + 0.7s) infinite;
+        rise 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.2) var(--d) forwards,
+        flow 6s ease-in-out infinite,
+        glow 2.4s ease-in-out calc(var(--d) + 0.8s) infinite;
     }
-    @keyframes flyIn {
-      0%   { transform: translateY(-120vh) rotate(-40deg) scale(0.3); opacity: 0; }
-      70%  { transform: translateY(12px) rotate(8deg) scale(1.15); opacity: 1; }
-      100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+    /* 아래에서 부드럽게 떠오르며 등장 */
+    @keyframes rise {
+      0%   { transform: translateY(40px) scale(0.6); opacity: 0; }
+      60%  { transform: translateY(-8px) scale(1.08); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
     }
-    @keyframes rainbow {
-      from { background-position: 0% 50%; }
-      to   { background-position: 400% 50%; }
+    /* 색이 천천히 흐름 */
+    @keyframes flow {
+      0%, 100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
     }
-    @keyframes flash {
-      0%   { filter: drop-shadow(0 0 4px #fff) brightness(1); }
-      50%  { filter: drop-shadow(0 0 28px #fff) drop-shadow(0 0 40px #ff0) brightness(2.2); }
-      100% { filter: drop-shadow(0 0 4px #fff) brightness(1); }
+    /* 은은하게 맥동하는 글로우 + 살짝 둥실 */
+    @keyframes glow {
+      0%, 100% {
+        filter: drop-shadow(0 0 6px rgba(94,234,212,0.5)) brightness(1);
+        transform: translateY(0);
+      }
+      50% {
+        filter: drop-shadow(0 0 22px rgba(129,140,248,0.9)) brightness(1.25);
+        transform: translateY(-7px);
+      }
     }
   </style>
 </head>
 <body>
   <div class="text" id="text"></div>
   <script>
-    const str = "이태원 폭주남 김동철";
+    const str = "박용준 살좀 쪄라";
     const box = document.getElementById("text");
     let i = 0;
     for (const c of str) {
@@ -74,7 +83,7 @@
       const span = document.createElement("span");
       span.className = "ch";
       span.textContent = c;
-      span.style.setProperty("--d", (i * 0.18) + "s"); // 한 글자씩 시차
+      span.style.setProperty("--d", (i * 0.12) + "s");
       box.appendChild(span);
       i++;
     }
